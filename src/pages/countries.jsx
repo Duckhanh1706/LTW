@@ -69,9 +69,9 @@ export default function CountriesPage() {
       <div className="grid">
         {filtered.map((c) => (
           <div key={c.cca3} className="card country-card">
-            <h3>{c.name.common}</h3>
-            <p>{c.region}</p>
-            <p>{c.capital?.[0]}</p>
+            <h4>Quốc Gia :{c.name.common}</h4>
+            <p>Khu vực: {c.region}</p>
+            <p>Thủ đô: {c.capital?.[0]}</p>
             <img src={c.flags.png} alt="" />
           </div>
         ))}
