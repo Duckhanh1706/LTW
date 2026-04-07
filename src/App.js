@@ -32,12 +32,14 @@ function AppLayout() {
   return (
     <>
       <nav style={{ margin: 10 }}>
+        {/*
         <Link to="/forms" style={{ padding: 5 }}>
           Forms
         </Link>
         <Link to="/countries" style={{ padding: 5 }}>
           Countries
         </Link>
+        */}
         <Link to="/" style={{ padding: 5 }}>
           Home
         </Link>
@@ -71,8 +73,10 @@ function AppLayout() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        {/*
         <Route path="/forms" element={<FormsPage />} />
         <Route path="/countries" element={<CountriesPage />} />
+        */}
 
         <Route
           path="/posts"
