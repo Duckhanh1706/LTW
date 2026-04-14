@@ -1,0 +1,80 @@
+/* Container */
+.container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Title */
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Card */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+/* Hover effect */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Blog title */
+.blog-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Description */
+.desc {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Delete button */
+.delete-btn,
+.detail-btn,
+.edit-btn {
+  background-color: #096dd9;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  justify-content: center;
+  width: 60px;
+}
+
+.delete-btn:hover {
+  background-color: #d9363e;
+}
+
+/* Edit button */
+
+.edit-btn:hover {
+  background-color: #05284d;
+}
+
+.detail-btn:hover {
+  background-color: #04ff58;
+}

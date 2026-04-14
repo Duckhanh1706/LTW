@@ -13,10 +13,11 @@ import NoMatch from "./frontend/pages/Nomatch";
 import Posts from "./frontend/pages/Posts";
 import PostLists from "./frontend/pages/PostList";
 import Post from "./frontend/pages/Post";
-
+import NewPost from "./frontend/pages/NewPost";
 import Login from "./frontend/pages/Login";
 import Stats from "./frontend/pages/Stats";
 import ProtectedRoute from "./frontend/components/ProtectRoute";
+import EditPost from "./frontend/pages/EditPost";
 
 function AppLayout() {
   const [user, setUser] = useState(null);
@@ -54,6 +55,11 @@ function AppLayout() {
         {user && (
           <Link to="/stats" style={{ padding: 5 }}>
             Stats
+          </Link>
+        )}
+        {user && (
+          <Link to="/newpost" style={{ padding: 5 }}>
+            New Post
           </Link>
         )}
         {!user && (
@@ -96,7 +102,23 @@ function AppLayout() {
           path="/stats"
           element={
             <ProtectedRoute user={user}>
-              <Stats user={user} />
+              <Stats />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit/:slug"
+          element={
+            <ProtectedRoute user={user}>
+              <EditPost />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="newpost"
+          element={
+            <ProtectedRoute user={user}>
+              <NewPost />
             </ProtectedRoute>
           }
         />

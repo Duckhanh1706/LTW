@@ -6,7 +6,7 @@ function Post() {
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/blogs/${slug}`)
+    fetch(`http://localhost:8080/api/post/${slug}`)
       .then((res) => res.json())
       .then((data) => setBlog(data))
       .catch((err) => console.error(err));
