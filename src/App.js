@@ -7,18 +7,16 @@ import {
 } from "react-router-dom";
 import { useState } from "react";
 
-import FormsPage from "./pages/forms";
-import CountriesPage from "./pages/countries";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import NoMatch from "./pages/Nomatch";
-import Posts from "./pages/Posts";
-import PostLists from "./pages/PostList";
-import Post from "./pages/Post";
+import Home from "./frontend/pages/Home";
+import About from "./frontend/pages/About";
+import NoMatch from "./frontend/pages/Nomatch";
+import Posts from "./frontend/pages/Posts";
+import PostLists from "./frontend/pages/PostList";
+import Post from "./frontend/pages/Post";
 
-import Login from "./pages/Login";
-import Stats from "./pages/Stats";
-import ProtectedRoute from "./components/ProtectRoute";
+import Login from "./frontend/pages/Login";
+import Stats from "./frontend/pages/Stats";
+import ProtectedRoute from "./frontend/components/ProtectRoute";
 
 function AppLayout() {
   const [user, setUser] = useState(null);
