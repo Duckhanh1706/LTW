@@ -1,25 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../App.css";
+import { API_BASE, authFetch } from "../config/api";
+import "../styles/form.css"; // ✅ dùng chung
 
 export default function NewPost() {
-  const [post, setPost] = useState({
-    slug: "",
-    title: "",
-    description: "",
-  });
-  const navigate = useNavigate();
-
+  const [post, setPost] = useState({ slug: "", title: "", description: "" });
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch("http://localhost:8080/api/post", {
+    authFetch(`${API_BASE}/api/post`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(post),
     })
       .then((res) => {
@@ -28,7 +21,8 @@ export default function NewPost() {
       })
       .then(() => {
         setMessage("✅ Post created!");
-        setPost({ slug: "", title: "", description: "" }); // reset form
+        setPost({ slug: "", title: "", description: "" });
+        navigate("/posts");
       })
       .catch((err) => {
         console.error(err);
@@ -37,38 +31,43 @@ export default function NewPost() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Create New Post</h2>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <h2>Create New Post</h2>
 
-      <span>Slug:</span>
-      <br />
-      <input
-        value={post.slug}
-        onChange={(e) => setPost({ ...post, slug: e.target.value })}
-      />
-      <br />
+        <div className="form-group">
+          <span>Slug:</span>
+          <input
+            placeholder="Slug"
+            value={post.slug}
+            onChange={(e) => setPost({ ...post, slug: e.target.value })}
+          />
+        </div>
 
-      <span>Title:</span>
-      <br />
-      <input
-        value={post.title}
-        onChange={(e) => setPost({ ...post, title: e.target.value })}
-      />
-      <br />
+        <div className="form-group">
+          <span>Title:</span>
+          <input
+            placeholder="Title"
+            value={post.title}
+            onChange={(e) => setPost({ ...post, title: e.target.value })}
+          />
+        </div>
 
-      <span>Description:</span>
-      <br />
-      <textarea
-        value={post.description}
-        onChange={(e) => setPost({ ...post, description: e.target.value })}
-      />
-      <br />
+        <div className="form-group">
+          <span>Description:</span>
+          <textarea
+            placeholder="Description"
+            value={post.description}
+            onChange={(e) => setPost({ ...post, description: e.target.value })}
+          />
+        </div>
 
-      <button type="submit" onClick={() => navigate(`/posts`)}>
-        Create
-      </button>
+        <button type="submit" className="form-btn">
+          Create
+        </button>
 
-      <p>{message}</p>
-    </form>
+        <p className="form-message">{message}</p>
+      </form>
+    </div>
   );
 }

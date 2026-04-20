@@ -1,34 +1,33 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../config/api";
 
 export default function Login({ onLogin }) {
-  const [creds, setCreds] = useState({
-    username: "",
-    password: "",
-  });
+  const [creds, setCreds] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   function handleLogin() {
-    fetch("http://localhost:8080/api/login", {
+    setError("");
+
+    fetch(`${API_BASE}/api/login`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(creds),
     })
       .then((res) => {
-        if (res.ok) {
-          onLogin && onLogin({ username: creds.username });
-          navigate("/stats");
-        } else {
-          setError("Invalid username or password!");
-        }
+        if (!res.ok) throw new Error("Sai tài khoản hoặc mật khẩu");
+        return res.json();
       })
-      .catch((err) => {
-        console.error(err);
-        setError("Login failed!");
-      });
+      .then((data) => {
+        // ✅ Lưu JWT token thật
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        onLogin?.(data.user);
+        navigate("/stats");
+      })
+      .catch((err) => setError(err.message));
   }
 
   return (
@@ -37,18 +36,22 @@ export default function Login({ onLogin }) {
 
       <input
         placeholder="Username"
-        onChange={(e) => setCreds({ ...creds, username: e.target.value })}
+        onChange={(e) =>
+          setCreds((prev) => ({ ...prev, username: e.target.value }))
+        }
       />
       <br />
 
       <input
         type="password"
         placeholder="Password"
-        onChange={(e) => setCreds({ ...creds, password: e.target.value })}
+        onChange={(e) =>
+          setCreds((prev) => ({ ...prev, password: e.target.value }))
+        }
       />
       <br />
 
-      <button onClick={handleLogin} style={{ marginTop: "10px" }}>
+      <button onClick={handleLogin} style={{ marginTop: 10 }}>
         Login
       </button>
 

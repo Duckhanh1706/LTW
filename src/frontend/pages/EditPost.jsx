@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import "../../App.css";
+import { useParams, useNavigate } from "react-router-dom";
+import { API_BASE, authFetch } from "../config/api";
+import "../styles/form.css"; // ✅ dùng chung
 
 export default function EditPost() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [post, setPost] = useState({
-    title: "",
-    description: "",
-  });
-
+  const [post, setPost] = useState({ title: "", description: "" });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // load dữ liệu
   useEffect(() => {
-    fetch(`http://localhost:8080/api/post/${slug}`)
+    fetch(`${API_BASE}/api/post/${slug}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
@@ -39,11 +34,8 @@ export default function EditPost() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch(`http://localhost:8080/api/post/${slug}`, {
+    authFetch(`${API_BASE}/api/post/${slug}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(post),
     })
       .then((res) => {
@@ -52,9 +44,9 @@ export default function EditPost() {
       })
       .then(() => {
         setMessage("✅ Updated successfully!");
+        navigate("/posts");
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         setMessage("❌ Update failed");
       });
   }
@@ -62,30 +54,32 @@ export default function EditPost() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Edit Post</h2>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <h2>Edit Post</h2>
 
-      <span>Title:</span>
-      <br />
-      <input
-        value={post.title}
-        onChange={(e) => setPost({ ...post, title: e.target.value })}
-      />
-      <br />
+        <div className="form-group">
+          <span>Title:</span>
+          <input
+            value={post.title}
+            onChange={(e) => setPost({ ...post, title: e.target.value })}
+          />
+        </div>
 
-      <span>Description:</span>
-      <br />
-      <textarea
-        value={post.description}
-        onChange={(e) => setPost({ ...post, description: e.target.value })}
-      />
-      <br />
+        <div className="form-group">
+          <span>Description:</span>
+          <textarea
+            value={post.description}
+            onChange={(e) => setPost({ ...post, description: e.target.value })}
+          />
+        </div>
 
-      <button type="submit" onClick={() => navigate(`/posts`)}>
-        Update
-      </button>
+        <button type="submit" className="form-btn">
+          Update
+        </button>
 
-      <p>{message}</p>
-    </form>
+        <p className="form-message">{message}</p>
+      </form>
+    </div>
   );
 }

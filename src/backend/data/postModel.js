@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const PostSchema = new mongoose.Schema({
   slug: {
     type: String,
@@ -14,4 +15,5 @@ const PostSchema = new mongoose.Schema({
     required: [true, "Please provide a description!"],
   },
 });
+
 module.exports = mongoose.model.Posts || mongoose.model("Posts", PostSchema);

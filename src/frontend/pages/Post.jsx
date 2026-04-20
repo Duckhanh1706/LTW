@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { API_BASE } from "../config/api";
 
 function Post() {
   const { slug } = useParams();
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/blogs/${slug}`)
+    fetch(`${API_BASE}/api/post/${slug}`)
       .then((res) => res.json())
       .then((data) => setBlog(data))
       .catch((err) => console.error(err));

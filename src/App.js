@@ -24,6 +24,8 @@ function AppLayout() {
   const navigate = useNavigate();
 
   function logOut() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
     navigate("/");
   }
@@ -31,22 +33,15 @@ function AppLayout() {
   return (
     <>
       <nav style={{ margin: 10 }}>
-        {/*
-        <Link to="/forms" style={{ padding: 5 }}>
-          Forms
-        </Link>
-        <Link to="/countries" style={{ padding: 5 }}>
-          Countries
-        </Link>
-        */}
         <Link to="/" style={{ padding: 5 }}>
           Home
         </Link>
-        {user && (
-          <Link to="/posts" style={{ padding: 5 }}>
-            Posts
-          </Link>
-        )}
+
+        {/* ✅ Ai cũng thấy link Posts */}
+        <Link to="/posts" style={{ padding: 5 }}>
+          Posts
+        </Link>
+
         <Link to="/about" style={{ padding: 5 }}>
           About
         </Link>
@@ -67,7 +62,6 @@ function AppLayout() {
             Login
           </Link>
         )}
-
         {user && (
           <span onClick={logOut} style={{ padding: 5, cursor: "pointer" }}>
             Logout
@@ -77,27 +71,17 @@ function AppLayout() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        {/*
-        <Route path="/forms" element={<FormsPage />} />
-        <Route path="/countries" element={<CountriesPage />} />
-        */}
 
-        <Route
-          path="/posts"
-          element={
-            <ProtectedRoute user={user}>
-              <Posts />
-            </ProtectedRoute>
-          }
-        >
+        {/* ✅ Xem posts KHÔNG cần login */}
+        <Route path="/posts" element={<Posts />}>
           <Route index element={<PostLists />} />
           <Route path=":slug" element={<Post />} />
         </Route>
 
         <Route path="/about" element={<About />} />
-
         <Route path="/login" element={<Login onLogin={setUser} />} />
 
+        {/* ✅ Các trang bên dưới cần login */}
         <Route
           path="/stats"
           element={

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_BASE, authFetch } from "../config/api";
 import "../styles/postlist.css";
 
 export default function PostLists() {
@@ -7,18 +8,18 @@ export default function PostLists() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // ✅ Kiểm tra đã login chưa qua token trong localStorage
+  const isLoggedIn = !!localStorage.getItem("token");
+
   const navigate = useNavigate();
 
   function handleDelete(slug) {
     const confirmDelete = window.confirm("Bạn có chắc muốn xoá?");
     if (!confirmDelete) return;
 
-    fetch(`http://localhost:8080/api/post/${slug}`, {
-      method: "DELETE",
-    })
+    authFetch(`${API_BASE}/api/post/${slug}`, { method: "DELETE" })
       .then((res) => {
         if (!res.ok) throw new Error("Delete failed");
-
         setBlogs((prev) => prev.filter((b) => b.slug !== slug));
       })
       .catch((err) => {
@@ -28,7 +29,7 @@ export default function PostLists() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/posts")
+    fetch(`${API_BASE}/api/posts`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
@@ -68,19 +69,23 @@ export default function PostLists() {
                 Detail
               </button>
 
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(blog.slug)}
-              >
-                Delete
-              </button>
+              {isLoggedIn && (
+                <>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(blog.slug)}
+                  >
+                    Delete
+                  </button>
 
-              <button
-                className="edit-btn"
-                onClick={() => navigate(`/edit/${blog.slug}`)}
-              >
-                Edit
-              </button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => navigate(`/edit/${blog.slug}`)}
+                  >
+                    Edit
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ))}

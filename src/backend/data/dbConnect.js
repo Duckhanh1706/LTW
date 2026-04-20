@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
+
 async function dbConnect() {
   mongoose
     .connect(process.env.DB_URL)
-
     .then(() => {
       console.log("Successfully connected to MongoDB Atlas!");
     })
@@ -11,4 +11,5 @@ async function dbConnect() {
       console.error(error);
     });
 }
+
 module.exports = dbConnect;
